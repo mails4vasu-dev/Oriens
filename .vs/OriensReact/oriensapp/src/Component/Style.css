@@ -1,0 +1,15 @@
+.custom_checkbox_outer_wrap input.form-check-input {
+    border: 3px solid rgb(151 151 151);
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+    background: transparent;
+    outline: none !important;
+    box-shadow: none !important;
+}
+.custom_checkbox_outer_wrap .form-check-input:checked[type=checkbox]{
+    background-image: url(../assets/images/check-mark.png) !important;
+    background-repeat: no-repeat;
+    background-size: 83%;
+    background-position: center;
+}

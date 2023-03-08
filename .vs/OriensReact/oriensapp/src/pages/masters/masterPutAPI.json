@@ -1,0 +1,37 @@
+[
+    {
+      "masterName": "assetCategory",
+      "apiURL": "/assetcategory/update"
+    },
+    {
+      "masterName": "assetsCriticality",
+      "apiURL": "/assetscriticality/update"
+    }
+    ,
+    {
+      "masterName": "assetsPriority",
+      "apiURL": "/assetpriority/update"
+    }
+    ,
+    {
+      "masterName": "assetsStatus",
+      "apiURL": "/assetstatus/update"
+    }
+    ,{
+      "masterName": "assetsType",
+      "apiURL": "/assettype/update"
+    }
+    ,{
+      "masterName": "assetsWarranty",
+      "apiURL": "/assetwarranty/update"
+    }
+    ,{
+      "masterName": "assetsLocation",
+      "apiURL": "/assetslocation/update"
+    }
+    ,{
+      "masterName": "assets",
+      "apiURL": "/assets/update"
+    }
+  ]
+    

@@ -1,0 +1,37 @@
+[
+    {
+      "masterName": "assetCategory",
+      "apiURL": "/assetcategory/create"
+    },
+    {
+      "masterName": "assetsCriticality",
+      "apiURL": "/assetscriticality/create"
+    }
+    ,
+    {
+      "masterName": "assetsPriority",
+      "apiURL": "/assetpriority/create"
+    }
+    ,
+    {
+      "masterName": "assetsStatus",
+      "apiURL": "/assetstatus/create"
+    }
+    ,{
+      "masterName": "assetsType",
+      "apiURL": "/assettype/create"
+    }
+    ,{
+      "masterName": "assetsWarranty",
+      "apiURL": "/assetwarranty/create"
+    }
+    ,{
+      "masterName": "assetsLocation",
+      "apiURL": "/assetslocation/create"
+    }
+    ,{
+      "masterName": "assets",
+      "apiURL": "/assets/create"
+    }
+  ]
+    

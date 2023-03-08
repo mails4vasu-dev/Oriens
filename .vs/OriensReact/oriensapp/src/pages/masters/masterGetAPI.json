@@ -1,0 +1,45 @@
+[
+  {
+    "masterName": "assetCategory",
+    "apiURL": "/assetcategory/getall"
+  },
+  {
+    "masterName": "assetsCriticality",
+    "apiURL": "/assetscriticality/getall"
+  }
+  ,
+  {
+    "masterName": "assetsPriority",
+    "apiURL": "/assetpriority/getall"
+  }
+  ,
+  {
+    "masterName": "assetsStatus",
+    "apiURL": "/assetstatus/getall"
+  }
+  ,{
+    "masterName": "assetsType",
+    "apiURL": "/assettype/getall"
+  }
+  ,{
+    "masterName": "assetsWarranty",
+    "apiURL": "/assetwarranty/getall"
+  }
+  ,{
+    "masterName": "assetsLocation",
+    "apiURL": "/assetslocation/getall"
+  }
+  ,{
+    "masterName": "assets",
+    "apiURL": "/assets/getall"
+  }
+  ,{
+    "masterName": "failureClass",
+    "apiURL": "/failureclass/getall"
+  }
+  ,{
+    "masterName": "uom",
+    "apiURL": "/uom/getall"
+  }
+]
+  
