@@ -1,56 +1,50 @@
-import { useEffect,useState } from "react";
+import { React,useEffect,useState } from "react";
 import { Configuration } from "../../config/index";
 import { Table } from 'reactstrap';
-function DynamicTable({headerList, onEdit, onDelete,masterName}){
+import Checkbox from "../../Component/Checkbox.js";
+import leftarrow from '../../assets/images/left-arrow.png';
+import back_arrow from '../../assets/images/back_arrow.png';
+import { Link } from "react-router-dom";
+import '../asset-component/assets-component.css';
+import { Modal,ModalBody } from 'reactstrap';
+function DynamicTable({headerList, onEdit, onDelete,masterName,contentInPopUp
+,showInWindow,onCancel}){debugger;
   //const [GetAPIList, setGetAPIList] = useState(data);
+  const [pageNumber, setpageNumber] = useState(1);
   
+  const [assetPage, setassetPageData] = useState([]);
   var getApi = require('./masterGetAPI.json');
   const BASE_URL = (url) => Configuration.BASE_URL + url;
   getApi = getApi.filter(a => a.masterName == masterName);
   const AssetCatgUrl=BASE_URL(getApi[0].apiURL); 
   //const [MasterDataList, setMasterDataList] = useState([]);
-  const [MasterDataList, setMasterDataList] = useState([
-//     {
-//       "assetCategoryName":"assetCategoryName 1"
-//     , "Id":"00000000-0000-0000-0000-000000000000"
-//     ,"assetCategoryCode":"","ParentCategoryId":null
-//     }
-// ,{
-//   "assetCategoryName":"assetCategoryName 2"
-// , "Id":"00000000-0000-0000-0000-000000000000"
-// ,"assetCategoryCode":"","ParentCategoryId":null
-// }
-
-  ]);
-  const [HTMLHeaderList, setheaderList] = useState([headerList]);
-  
+  const [MasterDataList, setMasterDataList] = useState([]);
+  const [RowCount, setRowCount] = useState([]);
+  const [TotalPages, setTotalPages] = useState([]);
+  //const [HTMLHeaderList, setHTMLHeaderList] = useState([headerList]);
+  //setheaderList(headerList);
   const [MasterKeyList, setMasterKeyList] = useState([]);
-
-
+  const [MasterPageData, setMasterPageData] = useState([]);
 
   const TableListData =()=>{
-   
-  //  console.log(MasterKeyList);
-  useEffect(()=>{
-    
+   if(MasterPageData==null || MasterPageData.length==0 || pageNumber==1){
     fetch(AssetCatgUrl)
     .then(response => response.json())
     .then(data => {
       setMasterDataList(data.result);
-     
-      return data.result;
-    }
-    ,
-          err => {
-            }
-
-    );
-
-  },)
-  
-
+      var rowList=data.result;
+      var pageData=[];
+      var iRowLength=rowList.length < 10 ? rowList.length-1:9;
+      for(var iRowIndex=0;iRowIndex<=iRowLength;iRowIndex++){
+          pageData.push(rowList[iRowIndex]);
+      }
+      setMasterPageData(pageData);
+      //return data.result;
+      return MasterPageData;
+    });
+   }
     
-}
+  }
 
 
  // get table heading data
@@ -59,9 +53,14 @@ function DynamicTable({headerList, onEdit, onDelete,masterName}){
   
   let objData=TableListData();
     if(MasterDataList != null && MasterDataList.length >0){
-      return Object.keys(MasterDataList[0]).map((data)=>{
-        var colHeader=HTMLHeaderList[0].filter(a => a.jsonHeader == data);
-        if(colHeader.length >0 && colHeader[0].jsonHeader==data){
+      return Object.keys(MasterDataList[0]).map((data)=>{debugger;
+        // if(HTMLHeaderList==null || HTMLHeaderList.length==0){
+        //   setHTMLHeaderList(headerList);
+        // }
+       // var colHeader=HTMLHeaderList[0].filter(a => a.jsonHeader == data);
+       var colHeader=headerList.filter(a => a.jsonHeader == data);
+        if(colHeader.length >0 && colHeader[0].jsonHeader==data
+          && colHeader[0].visible!="false"){
         return <td key={data}>{colHeader[0].htmlHeader}</td>
         }
     })
@@ -73,14 +72,16 @@ function DynamicTable({headerList, onEdit, onDelete,masterName}){
 const tdData =() =>{
   
   //let objData=TableListData();
-  if(MasterDataList != null && MasterDataList.length >0){
-    return MasterDataList.map((data)=>{
+  if(MasterPageData != null && MasterPageData.length >0){
+    return MasterPageData.map((data)=>{
       return(
           <tr>
                {
-                  Object.keys(MasterDataList[0]).map((v)=>{
-                    var colHeader=HTMLHeaderList[0].filter(a => a.jsonHeader == v);
-        if(colHeader.length >0 && colHeader[0].jsonHeader==v){
+                  Object.keys(MasterPageData[0]).map((v)=>{
+        //var colHeader=HTMLHeaderList[0].filter(a => a.jsonHeader == v);
+        var colHeader=headerList.filter(a => a.jsonHeader == v);
+       if(colHeader.length >0 && colHeader[0].jsonHeader==v
+          && colHeader[0].visible!="false"){
           return <td>
             <div></div>
             <div>
@@ -130,27 +131,128 @@ const tdCommands =() =>{
     
 }
 
-  return (
-   
-      <div className='asset_table_outer_wrap'>
+const nextPage =() => {
+  console.log("splice");
+  setpageNumber(pageNumber+1);
+
+  setRowCount(MasterDataList.length);
+  if(MasterDataList.length<10){
+      setTotalPages(MasterDataList.length);
+  }
+  else{
+      setTotalPages(MasterDataList.length/10);
+  }
+  //console.log("Lower: " + 5+(pageNumber-1)+ "Upper: " + 5*(pageNumber+1)-1);
+  var upperBound=(10*(pageNumber+1))-1;
+  var lowerBound=upperBound-9;
+  upperBound=upperBound>=MasterDataList.length?(MasterDataList.length)-1:(10*(pageNumber+1))-1;
+  lowerBound=lowerBound>=MasterDataList.length?(MasterDataList.length)-1:(upperBound-9);
+  var pageData=[];
+  for(var iRowIndex=lowerBound;iRowIndex<=upperBound;iRowIndex++){
+      pageData.push(MasterDataList[iRowIndex]);
+  }
+  setMasterPageData(pageData);
+
+}
+const closePopUp = () => {
+  onCancel();
+}
+const previousPage =() => { 
+  console.log("splice");
+  setpageNumber(pageNumber-1);
+
+  setRowCount(MasterDataList.length);
+  if(MasterDataList.length<10){
+      setTotalPages(MasterDataList.length);
+  }
+  else{
+      setTotalPages(MasterDataList.length/10);
+  }
+  var upperBound=(10*(pageNumber-1))-1;
+  var lowerBound=upperBound-9;
+  upperBound=upperBound>=MasterDataList.length?(MasterDataList.length)-1:(10*(pageNumber-1))-1;
+  lowerBound=lowerBound>=MasterDataList.length?(MasterDataList.length)-1:(upperBound-9);
+  var pageData=[];
+  for(var iRowIndex=lowerBound;iRowIndex<=upperBound;iRowIndex++){
+      pageData.push(MasterDataList[iRowIndex]);
+  }
+  setMasterPageData(pageData);
+ }
+ const getPageContent =() =>{
+    return <div className='asset_table_outer_wrap'>
           
 
-      <div className='asset_table_inner_wrap'>
-      <Table hover responsive>
-    <thead>
-    <tr>{ThData()}
-    <td>Action</td></tr>
-    </thead>
-    <tbody>
-      {tdData()}
-      
-  </tbody>
+    <div className='asset_table_inner_wrap'>
+    <Table hover responsive>
+  <thead>
+  <tr>{ThData()}
+  <td>Action</td></tr>
+  </thead>
+  <tbody>
+    {tdData()}
+    
+</tbody>
 </Table>
 
-      </div>
-     
-  </div>
+    </div>
+    <div className="pagination_outer_wrap">
+              <div className="select_per_page_outer_wrap">
+                  <label>
+                      Rows per page:
+                  </label>
+                  <select >
+                      <option value="10" selected>10</option>
+                      <option value="20">20</option>
+                      <option value="30">30</option>
+                  </select>
+                  <p><span>1-{TotalPages}</span> of <span>{RowCount}</span></p>
+              </div>
+              <div className="pagination_navigation_wrap">
+                  <ul>
+                      <li className="prev_back">
+                          <button className="pageButton">
+                              <img src={back_arrow} alt="back_arrow" className="pagination_navigation_img"/>
+                          </button>
+                      </li>
+                      <li className="prev_back">
+                          <button className="pageButton" onClick={previousPage}>
+                              <img src={leftarrow} alt="left-arrow" 
+                              className="pagination_navigation_img"/>
+                          </button>
+                      </li>
+                      <li className="nextback">
+                          <button className="pageButton" onClick={nextPage}>
+                              <img src={leftarrow} alt="left-arrow" 
+                              className="pagination_navigation_img"/>
+                          </button>
+                      </li>
+                      <li className="next_back_arrow">
+                          <button className="pageButton">
+                            <img src={back_arrow} alt="back_arrow" 
+                            className="pagination_navigation_img"/>
+                            </button>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+   
+</div>
 
+
+ }
+  return (
+    contentInPopUp? 
+    <Modal isOpen={true} toggle={true} className="masterPopUp">
+    <ModalBody className="masterPopUpBody">
+    <div>
+          <h4>{'New '+masterName}</h4>
+          <p className='close_popup' onClick={closePopUp}>&#10006;</p>
+        </div>
+    {getPageContent()}
+    </ModalBody>
+  </Modal>
+  :showInWindow?getPageContent():null
+    
 
   )
 }

@@ -26,6 +26,14 @@
       "apiURL": "/assetwarranty/delete"
     }
     ,{
+      "masterName": "locationType",
+      "apiURL": "/locationType/delete"
+    }
+    ,{
+      "masterName": "location",
+      "apiURL": "/location/delete"
+    }
+    ,{
       "masterName": "assetsLocation",
       "apiURL": "/assetslocation/delete"
     }

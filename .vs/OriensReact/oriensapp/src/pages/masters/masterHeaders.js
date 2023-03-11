@@ -6,11 +6,14 @@ function masterHeaders(){
     "headerName":
        [
         {jsonHeader:"assetCategoryName", htmlHeader:"Asset Category Name"}
+        ,{jsonHeader:"parentAssetCategoryName", htmlHeader:"Parent Asset Category Name"
+        ,edit:"false"}
         ,{jsonHeader:"parentCategoryId", htmlHeader:"Parent Category"
         ,controlType :"selectOption"
         ,parentName :"assetCategory"
         ,selectKey:"Id"
         ,selectValue:"assetCategoryName"
+        ,visible:"false"
       }
       //  ,{jsonHeader:"comments", htmlHeader:"Comments"}
       //  ,{jsonHeader:"notes", htmlHeader:"Notes"}
@@ -67,16 +70,62 @@ function masterHeaders(){
 
       ]
   }
+
+
+  ,
+  {
+    "masterName": "locationType",
+    "headerName":
+       [
+        {jsonHeader:"locationTypeName", htmlHeader:"Location Type Name"}
+      ]
+  }
+  ,
+  {
+    "masterName": "location",
+    "headerName":
+       [
+        {jsonHeader:"locationName", htmlHeader:"Location Name"}
+        ,{jsonHeader:"locationDesc", htmlHeader:"Location Desc"}
+        ,{jsonHeader:"locationType", htmlHeader:"Location Type",edit:"false"}
+        ,{jsonHeader:"parentLocation", htmlHeader:"Parent Location",edit:"false"}
+        ,{jsonHeader:"parentLocationId", htmlHeader:"Parent Location"
+       ,controlType :"selectOption"
+       ,parentName :"location"
+       ,selectKey:"Id"
+       ,selectValue:"locationName"
+       ,visible:"false"}
+        ,{jsonHeader:"locationTypeId", htmlHeader:"Location Type"
+        ,controlType :"selectOption"
+        ,parentName :"locationType"
+        ,selectKey:"Id"
+        ,selectValue:"locationTypeName"
+        ,visible:"false"}
+      ]
+  }
   ,
   {
     "masterName": "assetsLocation",
     "headerName":
        [
-        {jsonHeader:"locationName", htmlHeader:"Location Name"}
+        {jsonHeader:"assetName", htmlHeader:"Asset Name","edit":"false"}
+        ,{jsonHeader:"locationName", htmlHeader:"Location Name","edit":"false"}
+        ,{jsonHeader:"locationId", htmlHeader:"Location"
+       ,controlType :"selectOption"
+       ,parentName :"location"
+       ,selectKey:"Id"
+       ,selectValue:"locationName"
+       ,visible:"false"}
+       ,{jsonHeader:"assetId", htmlHeader:"Asset"
+       ,controlType :"selectOption"
+       ,parentName :"assets"
+       ,selectKey:"Id"
+       ,selectValue:"assetName"
+       ,visible:"false"}
        ,{jsonHeader:"quantity", htmlHeader:"Quantity"}
        ,{jsonHeader:"comments", htmlHeader:"Comments"}
        ,{jsonHeader:"notes", htmlHeader:"Notes"}
-     //  ,{jsonHeader:"assetId", htmlHeader:"AssetId"}
+      
       ]
   }
   ,
@@ -98,61 +147,84 @@ function masterHeaders(){
        [
         {jsonHeader:"assetName", htmlHeader:"Asset Name"}
        ,{jsonHeader:"serialNumber", htmlHeader:"Serial Number"}
+       ,{jsonHeader:"assetTypeName", htmlHeader:"Asset Type Name",edit:"false"}
+       ,{jsonHeader:"statusName", htmlHeader:"Status Name",edit:"false"}
+       ,{jsonHeader:"criticalityName", htmlHeader:"Criticality Name",edit:"false"}
+       ,{jsonHeader:"failureClassName", htmlHeader:"Failure Class Name",edit:"false"}
+       ,{jsonHeader:"priorityName", htmlHeader:"Priority Name",edit:"false"}
+       ,{jsonHeader:"warrantyName", htmlHeader:"Warranty Name",edit:"false"}
+       ,{jsonHeader:"uomName", htmlHeader:"UOM Name",edit:"false"}
        ,{jsonHeader:"model", htmlHeader:"Model"}
-       ,{jsonHeader:"purchasePrice", htmlHeader:"Purchase Price"}
-       ,{jsonHeader:"installationDate", htmlHeader:"Installation Date"}
-       ,{jsonHeader:"startDate", htmlHeader:"Start Date"}
-       ,{jsonHeader:"expirationDate", htmlHeader:"Expiration Date"}
-      ,{jsonHeader:"threshHoldCalendar", htmlHeader:"ThreshHold Calendar"}
+       ,{jsonHeader:"purchasePrice", htmlHeader:"Purchase Price" }
+       ,{jsonHeader:"installationDate", htmlHeader:"Installation Date"
+       ,controlType :"datePicker"}
+       ,{jsonHeader:"startDate", htmlHeader:"Start Date"
+       ,controlType :"datePicker"}
+       ,{jsonHeader:"expirationDate", htmlHeader:"Expiration Date"
+       ,controlType :"datePicker"}
+      ,{jsonHeader:"threshHoldCalendar", htmlHeader:"ThreshHold Calendar"
+      ,controlType :"datePicker"}
    //    ,{jsonHeader:"startingUsage", htmlHeader:"Starting Usage"}
       // ,{jsonHeader:"expirationUsage", htmlHeader:"Expiration Usage"}
        ,{jsonHeader:"assetTypeId", htmlHeader:"Asset Type"
         ,controlType :"selectOption"
         ,parentName :"assetsType"
         ,selectKey:"Id"
-        ,selectValue:"assetTypeName"}
+        ,selectValue:"assetTypeName"
+        ,visible:"false"
+      }
        ,{jsonHeader:"uomId", htmlHeader:"Uom"
        ,controlType :"selectOption"
        ,parentName :"uom"
        ,selectKey:"Id"
-       ,selectValue:"uomName"}
+       ,selectValue:"uomName"
+       ,visible:"false"}
        ,{jsonHeader:"assetWarrantyId", htmlHeader:"Asset Warranty"
        ,controlType :"selectOption"
        ,parentName :"assetsWarranty"
        ,selectKey:"Id"
-       ,selectValue:"warrantyName"}
+       ,selectValue:"warrantyName"
+       ,visible:"false"}
        ,{jsonHeader:"assetCategoryId", htmlHeader:"Asset Category"
        ,controlType :"selectOption"
        ,parentName :"assetCategory"
        ,selectKey:"Id"
        ,selectValue:"assetCategoryName"
+       ,visible:"false"
       }
        ,{jsonHeader:"failureClassesId", htmlHeader:"Failure Classes"
        ,controlType :"selectOption"
        ,parentName :"failureClass"
        ,selectKey:"Id"
-       ,selectValue:"failureClassName"}
+       ,selectValue:"failureClassName"
+       ,visible:"false"}
        ,{jsonHeader:"assetPriorityId", htmlHeader:"Asset Priority"
        ,controlType :"selectOption"
        ,parentName :"assetsPriority"
        ,selectKey:"Id"
-       ,selectValue:"priorityName"}
+       ,selectValue:"priorityName"
+       ,visible:"false"}
        ,{jsonHeader:"assetCriticalityId", htmlHeader:"Asset Criticality"
        ,controlType :"selectOption"
        ,parentName :"assetsCriticality"
        ,selectKey:"Id"
-       ,selectValue:"criticalityName"}
+       ,selectValue:"criticalityName"
+       ,visible:"false"}
        ,{jsonHeader:"assetStatusId", htmlHeader:"Asset Status"
        ,controlType :"selectOption"
        ,parentName :"assetsStatus"
        ,selectKey:"Id"
        ,selectValue:"statusName"
+       ,visible:"false"
       }
-      //  ,{jsonHeader:"parentAssetId", htmlHeader:"Parent Asset"
-      //  ,controlType :"selectOption"
-      //  ,parentName :"assets"
-      //  ,selectKey:"Id"
-      //  ,selectValue:"assetName"}
+       ,{jsonHeader:"parentAssetId", htmlHeader:"Parent Asset"
+       ,controlType :"selectOption"
+       ,parentName :"assets"
+       ,selectKey:"Id"
+       ,selectValue:"assetName"
+       ,visible:"false"
+       }
+       ,{jsonHeader:"location", htmlHeader:"Location",showicons:"true",headerListKey:"assetsLocation"}
        ,{jsonHeader:"comments", htmlHeader:"Comments"}
        ,{jsonHeader:"notes", htmlHeader:"Notes"}
       ]

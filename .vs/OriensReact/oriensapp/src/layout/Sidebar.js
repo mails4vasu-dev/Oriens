@@ -41,6 +41,8 @@ const refreshPage = () => {
               <MenuItem routerLink={<Link to={getMasterPageLink("/masters?masterName=assetsStatus")} />}>Asset Status</MenuItem>
               <MenuItem routerLink={<Link to={getMasterPageLink("/masters?masterName=assetsType")} />}>Asset Type</MenuItem>
               <MenuItem routerLink={<Link to={getMasterPageLink("/masters?masterName=assetsWarranty")} />}>Asset Warranty</MenuItem>
+              <MenuItem routerLink={<Link to={getMasterPageLink("/masters?masterName=locationType")} />}>Location Type</MenuItem>
+              <MenuItem routerLink={<Link to={getMasterPageLink("/masters?masterName=location")} />}>Location</MenuItem>
               <MenuItem routerLink={<Link to={getMasterPageLink("/masters?masterName=assetsLocation")} />}>Asset Location</MenuItem>
               <MenuItem routerLink={<Link to={getMasterPageLink("/masters?masterName=assets")} />}>Asset</MenuItem>
             </SubMenu>

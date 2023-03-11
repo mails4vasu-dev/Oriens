@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import '../masters/mastersstyle.css'
+import masterHeaders from './masterHeaders'
 import { Configuration } from "../../config/index";
 import requestJson from './masterRequest'
 import masterKeys from './masterKeys'
@@ -8,12 +9,19 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { setHours, setMinutes } from 'date-fns';
 import Select from 'react-select';
+import grid_icon from '../../assets/images/tabel_input_ico.png';
+import tree_icon from '../../assets/images/tree_input_ico.png';
 import MasterDataUtility from "./MasterDataUtility"
+import { useLocation } from 'react-router-dom';
+import DynamicTable from "./dynamicmastertable";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem,   Modal, 
   ModalBody } from 'reactstrap';
 const PopUpModal = ({show, formInputdata, onCancel, editUser,headerlist
-  ,formMode,masterName}) => {
-
+  ,formMode,masterName,masterTitle}) => {
+console.log("formMode " + formMode);
+const [ColumnHeaders, setColumnHeaders] = useState([]);
+const [MasterHeaderList, setMasterHeaderList] = useState(masterHeaders);
+const query = new URLSearchParams(useLocation().search);
 const [MasterDataOptions,setMasterDataOptions] = useState(null);
 const [MasterForSelectControl,setMasterForSelectControl] = useState([]);
 const [AssetCategoryList,setAssetCategoryList] = useState([]);
@@ -25,8 +33,11 @@ const [AssetStatusList,setAssetStatusList] = useState([]);
 const [AssetList,setAssetList] = useState([]);    
 const [FailureClassList,setFailureClassList] = useState([]);    
 const [UomList,setUomList] = useState([]);    
+const [LocationList,setLocationList] = useState([]);    
+const [LocationTypeList,setLocationTypeList] = useState([]);    
 const [selectedOption, setSelectedOption] = useState(null);
-    
+const [paramcontentInPopUp,setparamcontentInPopUp]= useState(false); 
+const [paramshowInWindow,setparamshowInWindow]= useState(false); 
     // handle onChange event of the dropdown
     const handleSelectOptionChange = e => {
       setSelectedOption(e);
@@ -84,8 +95,8 @@ const [MasterKeyList, setMasterKeyList] = useState();
   var getMasterListApi = require('./masterGetAPI.json');
  
   const [MasterDataList, setMasterDataList] = useState([]);
-  const  getMasterList=(parentName) =>{ debugger;
-   var lstGetApi = getMasterListApi.filter(a => a.masterName == parentName);
+  const  getMasterList=(parentName) =>{ 
+     var lstGetApi = getMasterListApi.filter(a => a.masterName == parentName);
    const getMasterListAPIUrl=BASE_URL(lstGetApi[0].apiURL);
    
    var tempJsonList=[{"label" : "Select" ,"value" : "0"}];
@@ -93,7 +104,6 @@ const [MasterKeyList, setMasterKeyList] = useState();
    .then(response => response.json())
    .then(data => {
      Object.keys(data.result).map((jsonItem)=>{
-      
       var paramJsonList=data.result;
       var paramJsonItem= paramJsonList[jsonItem];
      
@@ -101,32 +111,38 @@ const [MasterKeyList, setMasterKeyList] = useState();
       if(parentName=="assetCategory"){
         dynamicJson["label"] =  paramJsonItem["assetCategoryName"];
       }
-      if(parentName=="assetsType"){debugger;
+      if(parentName=="assetsType"){
         dynamicJson["label"] =  paramJsonItem["assetTypeName"];
       }
-      if(parentName=="assetsWarranty"){debugger;
+      if(parentName=="assetsWarranty"){
         dynamicJson["label"] =  paramJsonItem["warrantyName"];
       }
       
-      if(parentName=="assetsPriority"){debugger;
+      if(parentName=="assetsPriority"){
         dynamicJson["label"] =  paramJsonItem["priorityName"];
       }
       
-      if(parentName=="assetsCriticality"){debugger;
+      if(parentName=="assetsCriticality"){
         dynamicJson["label"] =  paramJsonItem["criticalityName"];
       }
       
-      if(parentName=="assetsStatus"){debugger;
+      if(parentName=="assetsStatus"){
         dynamicJson["label"] =  paramJsonItem["statusName"];
       }
-      if(parentName=="assets"){debugger;
+      if(parentName=="assets"){
         dynamicJson["label"] =  paramJsonItem["assetName"];
       }
-      if(parentName=="failureClass"){debugger;
+      if(parentName=="failureClass"){
         dynamicJson["label"] =  paramJsonItem["failureClassName"];
       }
-      if(parentName=="uom"){debugger;
+      if(parentName=="uom"){
         dynamicJson["label"] =  paramJsonItem["uomName"];
+      }
+      if(parentName=="location"){
+        dynamicJson["label"] =  paramJsonItem["locationName"];
+      }
+      if(parentName=="locationType"){
+        dynamicJson["label"] =  paramJsonItem["locationTypeName"];
       }
 //      dynamicJson["label"] =  paramJsonItem["assetCategoryName"];
       dynamicJson["value"] = paramJsonItem["id"];
@@ -175,6 +191,15 @@ const [MasterKeyList, setMasterKeyList] = useState();
       setUomList(tempJsonList);
       return UomList;
     }
+    if(parentName=="location"){
+      setLocationList(tempJsonList);
+      return LocationList;
+    }
+
+    if(parentName=="locationType"){
+      setLocationTypeList(tempJsonList);
+      return LocationTypeList;
+    }
      //return tempJsonList;
    }
    ,
@@ -184,6 +209,7 @@ const [MasterKeyList, setMasterKeyList] = useState();
    );
 
  }
+ 
  const getMasterForSelectControl=(listName)=>{
   if(listName=="assetCategory"){
     return AssetCategoryList;
@@ -206,13 +232,18 @@ const [MasterKeyList, setMasterKeyList] = useState();
   if(listName=="assets"){
     return AssetList;
   }
-
   if(listName=="failureClass"){
     return FailureClassList;
   }
 
   if(listName=="uom"){
     return UomList;
+  }
+  if(listName=="location"){
+    return LocationList;
+  }
+  if(listName=="locationType"){
+    return LocationTypeList;
   }
  }
   const initialFormState = () => {
@@ -228,6 +259,10 @@ const [MasterKeyList, setMasterKeyList] = useState();
     getMasterList('assets');
     getMasterList('failureClass');
     getMasterList('uom');
+    getMasterList('location');
+    getMasterList('locationType');
+    setparamcontentInPopUp(false);
+    setparamshowInWindow(false);
   } 
   const getMasterSelectOptions =(listType)=>{
 if(listType=="assetCategory"){
@@ -323,8 +358,18 @@ const deleteJsonData = () =>  {
       currentDate: date
     })
   }
+  const showListPopUp=(paramMasterName)=>{debugger;
+    setparamcontentInPopUp(true);
+    setparamshowInWindow(false);
+    setColumnHeaders(MasterHeaderList.filter(a => a.masterName == paramMasterName)[0].headerName);
+  }
   
- 
+  const hideListPopUp=()=>{
+    setparamcontentInPopUp(false);
+    setparamshowInWindow(false);
+    
+  }
+  
   const updateControlDate=(name,value)=>{
     let tempJson=InitialJsonInput;
     InitialJsonInput[name]=value;
@@ -340,17 +385,30 @@ const deleteJsonData = () =>  {
      let tempJsonInput=JsonInput;
   }
   const getControlDate=(name,value)=>{
-    // let tempJson=InitialJsonInput;
-    // InitialJsonInput[name]=value;
-    //  setJsonInput(tempJson);
-    //  var dateValue=value;
-
-    if(InitialJsonInput[name].toString().indexOf("<")==-1){
-      value= InitialJsonInput[name];
+    if(InitialJsonInput[name]!=null){
+      if(InitialJsonInput[name].toString().indexOf("<")==-1){
+        value= InitialJsonInput[name];
+      }
     }
+    
     return value;
   }
-
+  const colourStyles = {
+    menuList: styles => ({
+      background: 'papayawhip',
+    }),
+    option: (styles, { isFocused, isSelected }) => ({
+         background: isFocused
+        ? 'hsla(291, 64%, 42%, 0.5)'
+        : isSelected
+          ? 'hsla(291, 64%, 42%, 1)'
+          : undefined,
+      zIndex: 1,
+    }),
+    menu: base => ({
+        zIndex: 100,
+    }),
+  }
   const getFormFields =()=>{
     if(formMode=='Delete'){
       deleteJsonData();
@@ -360,7 +418,8 @@ const deleteJsonData = () =>  {
         let tempMasterForSelectControl=MasterForSelectControl;
         return Object.keys(headerlist).map((data)=>{
           if(headerlist[data].controlType!=null && 
-            headerlist[data].controlType=="datePicker"){
+            headerlist[data].controlType=="datePicker"
+            &&headerlist[data].edit !="false"){
 
             return <li>
             <label  className="lblCaption">{headerlist[data].htmlHeader}</label>
@@ -383,22 +442,22 @@ const deleteJsonData = () =>  {
 
           }
           else if(headerlist[data].controlType!=null && 
-            headerlist[data].controlType=="selectOption"){
+            headerlist[data].controlType=="selectOption"
+            &&headerlist[data].edit !="false"){
 
             return <li>
             <label  className="lblCaption">{headerlist[data].htmlHeader}</label>
             <Select
-        placeholder="Select Option"
-        name={headerlist[data].jsonHeader}
-        value={selectedOption} // set selected value
-        options={ getMasterForSelectControl(headerlist[data].parentName)} // set list of the data
-        onChange={(optionSelected) => {
-          //console.log();
-          handleSelectOptionChange();
-          updateControlSelect(headerlist[data].jsonHeader,optionSelected);
-        }}
-        //onChange={handleSelectOptionChange} // assign onChange function
-      />
+                    placeholder="Select Option"
+                    className="masterUIselect"
+                    name={headerlist[data].jsonHeader}
+                    value={selectedOption} // set selected value
+                    options={ getMasterForSelectControl(headerlist[data].parentName)} // set list of the data
+                    onChange={(optionSelected) => {
+                      handleSelectOptionChange();
+                      updateControlSelect(headerlist[data].jsonHeader,optionSelected);
+                    }}
+                    />
             </li>
             
             
@@ -407,14 +466,42 @@ const deleteJsonData = () =>  {
 
 
           }
-          else{
 
-            return   <li>
+          
+          else if(headerlist[data].edit !="false"){
+            if(headerlist[data].showicons =="true"){
+              return   <li>
+              <label  className="lblCaption">{headerlist[data].htmlHeader}</label>
+              <div className='input_with_icons'>
+              <input type="text" 
+                name={headerlist[data].jsonHeader} 
+                onChange={onInputChange} autoFocus autoComplete="off" 
+                placeholder={'Enter '+headerlist[data].htmlHeader}/>
+                <button type="button" className='grid_icon' 
+                onClick=
+                {() => {
+                  showListPopUp(headerlist[data].headerListKey);
+                }}
+                >
+                <img src={grid_icon} alt="grid_icon"/>
+              </button>
+              <button type="button" className='tree_icon'>
+                <img src={tree_icon} alt="tree_icon"/>
+              </button>
+              </div>
+              </li>
+  
+            }
+            else{
+              return   <li>
             <label  className="lblCaption">{headerlist[data].htmlHeader}</label>
-            <input type="text" name={headerlist[data].jsonHeader}
-            //value={formInputdata[headerlist[data].jsonHeader]}
-              onChange={onInputChange} autoFocus autoComplete="off" />
+            <input type="text" 
+              name={headerlist[data].jsonHeader} 
+              onChange={onInputChange} autoFocus autoComplete="off" 
+              placeholder={'Enter '+headerlist[data].htmlHeader}/>
             </li>
+
+            }
 
           }
       
@@ -426,22 +513,17 @@ const deleteJsonData = () =>  {
       }
       
    }
-
+  
   return (
     show ? (
-      <Modal isOpen={true} toggle={true} className="filter_popup_outer_wrap">
+      <div>
+<Modal isOpen={true} toggle={true} className="filter_popup_outer_wrap">
       <ModalBody>
         <div className='popup_filter_header_outer_wrap'>
-          <h4>NEW ASSET</h4>
+          <h4>{'New '+masterTitle}</h4>
           <p className='close_popup' onClick={closePopUp}>&#10006;</p>
         </div>
         <div className="modal-section">
-          {/* <div id="resp-table">
-            <div id="resp-table-body" class="filter_form_outer_wrap">
-                {getFormFields()}
-            </div>
-          </div> */}
-
           <div className='filter_form_outer_wrap'>
             <ul>
             {getFormFields()}
@@ -451,10 +533,16 @@ const deleteJsonData = () =>  {
         </div>
         <div className='more_filter_footer_wrap'>
           <button type="button" className='mastercancel' onClick={onCancel}>Cancel</button>
-          <button type="submit" className='mastersave'>Submit</button>
+          <button type="submit" className='mastersave' onClick={submitData}>Submit</button>
         </div>
+
+        <DynamicTable headerList={ColumnHeaders} masterName="assetsLocation" 
+        contentInPopUp={paramcontentInPopUp} showInWindow={paramshowInWindow} 
+        onCancel={hideListPopUp} />
       </ModalBody>
   </Modal>
+      </div>
+      
     ) : null
   );
 }

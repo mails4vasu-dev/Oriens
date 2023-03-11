@@ -30,6 +30,14 @@
       "apiURL": "/assetslocation/create"
     }
     ,{
+      "masterName": "locationType",
+      "apiURL": "/locationType/create"
+    }
+    ,{
+      "masterName": "location",
+      "apiURL": "/location/create"
+    }
+    ,{
       "masterName": "assets",
       "apiURL": "/assets/create"
     }

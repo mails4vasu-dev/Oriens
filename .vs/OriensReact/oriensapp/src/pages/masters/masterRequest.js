@@ -10,6 +10,7 @@ function masterRequest(){
       [
         {
             "assetCategoryName":"<assetCategoryName>"
+            , "parentAssetCategoryName":"<parentAssetCategoryName>"
           , "Id":"00000000-0000-0000-0000-000000000000"
           ,"assetCategoryCode":""
           ,"parentCategoryId":"<parentCategoryId>"
@@ -67,6 +68,35 @@ function masterRequest(){
 
         ]
     }
+
+    ,
+    {
+      "masterName": "locationType",
+      "requestJson":
+      [
+        {
+          "locationTypeName":"<locationTypeName>"
+          ,"Id":"00000000-0000-0000-0000-000000000000"
+      }
+
+      ]
+    }
+    ,
+    {
+      "masterName": "location",
+      "requestJson":
+      [
+        {
+          "parentLocationId":"00000000-0000-0000-0000-000000000000"
+          ,"locationName":"<locationName>"
+          ,"locationDesc":"<locationDesc>"
+          ,"locationTypeId":"00000000-0000-0000-0000-000000000000"
+        ,"Id":"00000000-0000-0000-0000-000000000000"
+      }
+
+      ]
+    }
+
     ,
     {
       "masterName": "assetsLocation",
@@ -74,10 +104,10 @@ function masterRequest(){
       [
         {"assetId":"00000000-0000-0000-0000-000000000000"
         ,"locationId":"00000000-0000-0000-0000-000000000000"
-        ,"location":"<location>"
         ,"quantity":0.0
-        ,"location":null,
-        "Comments":null,"Notes":null
+        ,"Id":"00000000-0000-0000-0000-000000000000"
+        ,"Comments":null
+        ,"Notes":null
       }
 
       ]
@@ -104,7 +134,7 @@ function masterRequest(){
         ,"assetPriorityId":"00000000-0000-0000-0000-000000000000"
         ,"assetCriticalityId":"00000000-0000-0000-0000-000000000000"
         ,"assetStatusId":"00000000-0000-0000-0000-000000000000"
-       // ,"parentAssetId":null
+        ,"parentAssetId":"00000000-0000-0000-0000-000000000000"
       }
      ]
     }

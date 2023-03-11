@@ -150,3 +150,32 @@ h1, p {
   font-weight: 500;
   color: #ADAAAA;
 }
+.masterUIselect {
+  width: 100%;
+  border: none;
+}
+.masterUIselect > div:first-child  {
+  border: none !important;
+  border-style: none !important;
+  background-color: red;
+  
+}
+.pageButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  padding: 5px;
+}
+.pagination_navigation_img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.masterPopUp {
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 1200px !important;
+}

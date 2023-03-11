@@ -30,6 +30,14 @@
     "apiURL": "/assetslocation/getall"
   }
   ,{
+    "masterName": "locationType",
+    "apiURL": "/locationType/getall"
+  }
+  ,{
+    "masterName": "location",
+    "apiURL": "/location/getall"
+  }
+  ,{
     "masterName": "assets",
     "apiURL": "/assets/getall"
   }

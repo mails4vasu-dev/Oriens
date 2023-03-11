@@ -26,6 +26,14 @@
       "apiURL": "/assetwarranty/update"
     }
     ,{
+      "masterName": "locationType",
+      "apiURL": "/locationType/update"
+    }
+    ,{
+      "masterName": "location",
+      "apiURL": "/location/update"
+    }
+    ,{
       "masterName": "assetsLocation",
       "apiURL": "/assetslocation/update"
     }

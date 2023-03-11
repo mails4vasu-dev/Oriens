@@ -1,14 +1,16 @@
 function masterKeys(){
     return (
         [
-            {masterName:"assetCategory", keyName:"id"}
-            ,{masterName:"assetsCriticality", keyName:"id"}
-            ,{masterName:"assetsPriority", keyName:"id"}
-            ,{masterName:"assetsStatus", keyName:"id"}
-            ,{masterName:"assetsType", keyName:"id"}
-            ,{masterName:"assetsWarranty", keyName:"id"}
-            ,{masterName:"assetsLocation", keyName:"id"}
-            ,{masterName:"assets", keyName:"id"}
+            {masterName:"assetCategory", keyName:"id",title:"Asset Category"}
+            ,{masterName:"assetsCriticality", keyName:"id",title:"Asset Criticality"}
+            ,{masterName:"assetsPriority", keyName:"id",title:"Asset Priority"}
+            ,{masterName:"assetsStatus", keyName:"id",title:"Asset Status"}
+            ,{masterName:"assetsType", keyName:"id",title:"Asset Type"}
+            ,{masterName:"assetsWarranty", keyName:"id",title:"Asset Warranty"}
+            ,{masterName:"assetsLocation", keyName:"id",title:"Asset Location"}
+            ,{masterName:"locationType", keyName:"id",title:"Location Type"}
+            ,{masterName:"location", keyName:"id",title:"Location"}
+            ,{masterName:"assets", keyName:"id",title:"Asset"}
         ]
     )
   }
