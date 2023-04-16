@@ -9,11 +9,11 @@ function masterRequest(){
       "requestJson":
       [
         {
-            "assetCategoryName":"<assetCategoryName>"
-            , "parentAssetCategoryName":"<parentAssetCategoryName>"
+            "assetCategoryName":null
+            , "parentAssetCategoryName":null
           , "Id":"00000000-0000-0000-0000-000000000000"
-          ,"assetCategoryCode":""
-          ,"parentCategoryId":"<parentCategoryId>"
+          ,"assetCategoryCode":null
+          ,"parentCategoryId":null
 
         }
       ]

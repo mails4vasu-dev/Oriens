@@ -145,25 +145,38 @@ function masterHeaders(){
     "masterName": "assets",
     "headerName":
        [
-        {jsonHeader:"assetName", htmlHeader:"Asset Name"}
-       ,{jsonHeader:"serialNumber", htmlHeader:"Serial Number"}
+        {jsonHeader:"assetName", htmlHeader:"Asset Name",controlType :"link"}
+        ,{jsonHeader:"assetId", htmlHeader:"assetId", controlType :"hidden"}
+        ,{jsonHeader:"statusName", htmlHeader:"Asset Status",edit:"false"}
+        ,{jsonHeader:"assetCategoryName", htmlHeader:"Asset Category Name",edit:"false"
+        ,visible:"false"}
+        ,{jsonHeader:"assetCategoryId", htmlHeader:"Asset Category Name"
+        ,controlType :"selectOption"
+        ,parentName :"assetCategory"
+        ,selectKey:"Id"
+        ,selectValue:"assetCategoryName"
+        ,visible:"false"
+       }
        ,{jsonHeader:"assetTypeName", htmlHeader:"Asset Type Name",edit:"false"}
-       ,{jsonHeader:"statusName", htmlHeader:"Status Name",edit:"false"}
-       ,{jsonHeader:"criticalityName", htmlHeader:"Criticality Name",edit:"false"}
-       ,{jsonHeader:"failureClassName", htmlHeader:"Failure Class Name",edit:"false"}
-       ,{jsonHeader:"priorityName", htmlHeader:"Priority Name",edit:"false"}
-       ,{jsonHeader:"warrantyName", htmlHeader:"Warranty Name",edit:"false"}
-       ,{jsonHeader:"uomName", htmlHeader:"UOM Name",edit:"false"}
-       ,{jsonHeader:"model", htmlHeader:"Model"}
-       ,{jsonHeader:"purchasePrice", htmlHeader:"Purchase Price" }
+       ,{jsonHeader:"priorityName", htmlHeader:"Priority",edit:"false"}
+       ,{jsonHeader:"criticalityName", htmlHeader:"Criticality",edit:"false"}
+       ,{jsonHeader:"serialNumber", htmlHeader:"Serial Number",visible:"false"}
+      
+       ,{jsonHeader:"failureClassName", htmlHeader:"Failure Class Name",edit:"false",visible:"false"}
+       
+       ,{jsonHeader:"warrantyName", htmlHeader:"Warranty Name",edit:"false"
+       ,visible:"false"}
+       ,{jsonHeader:"uomName", htmlHeader:"UOM Name",edit:"false",visible:"false"}
+       ,{jsonHeader:"model", htmlHeader:"Model",visible:"false"}
+       ,{jsonHeader:"purchasePrice", htmlHeader:"Purchase Price" ,visible:"false"}
        ,{jsonHeader:"installationDate", htmlHeader:"Installation Date"
-       ,controlType :"datePicker"}
+       ,controlType :"datePicker",visible:"false"}
        ,{jsonHeader:"startDate", htmlHeader:"Start Date"
-       ,controlType :"datePicker"}
+       ,controlType :"datePicker",visible:"false"}
        ,{jsonHeader:"expirationDate", htmlHeader:"Expiration Date"
-       ,controlType :"datePicker"}
+       ,controlType :"datePicker",visible:"false"}
       ,{jsonHeader:"threshHoldCalendar", htmlHeader:"ThreshHold Calendar"
-      ,controlType :"datePicker"}
+      ,controlType :"datePicker",visible:"false"}
    //    ,{jsonHeader:"startingUsage", htmlHeader:"Starting Usage"}
       // ,{jsonHeader:"expirationUsage", htmlHeader:"Expiration Usage"}
        ,{jsonHeader:"assetTypeId", htmlHeader:"Asset Type"
@@ -185,13 +198,7 @@ function masterHeaders(){
        ,selectKey:"Id"
        ,selectValue:"warrantyName"
        ,visible:"false"}
-       ,{jsonHeader:"assetCategoryId", htmlHeader:"Asset Category"
-       ,controlType :"selectOption"
-       ,parentName :"assetCategory"
-       ,selectKey:"Id"
-       ,selectValue:"assetCategoryName"
-       ,visible:"false"
-      }
+       
        ,{jsonHeader:"failureClassesId", htmlHeader:"Failure Classes"
        ,controlType :"selectOption"
        ,parentName :"failureClass"
@@ -224,9 +231,10 @@ function masterHeaders(){
        ,selectValue:"assetName"
        ,visible:"false"
        }
-       ,{jsonHeader:"location", htmlHeader:"Location",showicons:"true",headerListKey:"assetsLocation"}
-       ,{jsonHeader:"comments", htmlHeader:"Comments"}
-       ,{jsonHeader:"notes", htmlHeader:"Notes"}
+       ,{jsonHeader:"location", htmlHeader:"Location",showicons:"true"
+       ,headerListKey:"assetsLocation",visible:"false"}
+       ,{jsonHeader:"comments", htmlHeader:"Comments",visible:"false"}
+       ,{jsonHeader:"notes", htmlHeader:"Notes",visible:"false"}
       ]
   }
 ]

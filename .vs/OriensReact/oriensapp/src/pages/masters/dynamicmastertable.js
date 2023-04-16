@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import '../asset-component/assets-component.css';
 import { Modal,ModalBody } from 'reactstrap';
 function DynamicTable({headerList, onEdit, onDelete,masterName,contentInPopUp
-,showInWindow,onCancel}){debugger;
+,showInWindow,onCancel}){
   //const [GetAPIList, setGetAPIList] = useState(data);
   const [pageNumber, setpageNumber] = useState(1);
   
@@ -53,17 +53,17 @@ function DynamicTable({headerList, onEdit, onDelete,masterName,contentInPopUp
   
   let objData=TableListData();
     if(MasterDataList != null && MasterDataList.length >0){
-      return Object.keys(MasterDataList[0]).map((data)=>{debugger;
-        // if(HTMLHeaderList==null || HTMLHeaderList.length==0){
-        //   setHTMLHeaderList(headerList);
-        // }
-       // var colHeader=HTMLHeaderList[0].filter(a => a.jsonHeader == data);
-       var colHeader=headerList.filter(a => a.jsonHeader == data);
-        if(colHeader.length >0 && colHeader[0].jsonHeader==data
-          && colHeader[0].visible!="false"){
-        return <td key={data}>{colHeader[0].htmlHeader}</td>
-        }
-    })
+      
+   return Object.keys(headerList).map((data)=>{
+    var currHeader=headerList[data].jsonHeader;
+    var colHeader=headerList.filter(a => a.jsonHeader == data);
+     if(MasterDataList[0][currHeader] !=null && 
+      headerList[data].visible!="false"){
+     return <td key={data}>{headerList[data].htmlHeader}</td>
+     }
+ }
+ 
+)
     }
     
  }
@@ -72,23 +72,48 @@ function DynamicTable({headerList, onEdit, onDelete,masterName,contentInPopUp
 const tdData =() =>{
   
   //let objData=TableListData();
-  if(MasterPageData != null && MasterPageData.length >0){
-    return MasterPageData.map((data)=>{
+  if(MasterDataList != null && MasterDataList.length >0){
+    return MasterDataList.map((data)=>{
       return(
           <tr>
+            <td className="wd2px">
+                                <Checkbox
+                                    type="checkbox"
+                                    name="selectAll"
+                                    id="selectAll"
+                                   
+                                />
+                            </td>
                {
-                  Object.keys(MasterPageData[0]).map((v)=>{
-        //var colHeader=HTMLHeaderList[0].filter(a => a.jsonHeader == v);
-        var colHeader=headerList.filter(a => a.jsonHeader == v);
-       if(colHeader.length >0 && colHeader[0].jsonHeader==v
-          && colHeader[0].visible!="false"){
-          return <td>
-            <div></div>
-            <div>
-              {data[v]}
-            </div>
-            </td>
-        }
+
+
+
+
+                  Object.keys(headerList).map((v)=>{
+        
+                      var colCell=headerList[v];
+                      var cellValue=data[colCell.jsonHeader];
+                      var pageRedirect="assets_detail?AssetId=" + data["id"];
+                    if(colCell.visible!="false" && colCell.controlType!="hidden" ){
+
+                      if(colCell.controlType=="link"){
+                        return <td>
+                        <div></div>
+                        <div>
+                          <a href={pageRedirect} >{cellValue}</a>
+                        </div>
+                        </td>
+                      }
+                      else{
+                        return <td>
+                      <div></div>
+                      <div>
+                        {cellValue}
+                      </div>
+                      </td>
+                      }
+                    }
+        
                   })
                }
                <td class="action_icon_outer_wrap"> 
@@ -132,7 +157,6 @@ const tdCommands =() =>{
 }
 
 const nextPage =() => {
-  console.log("splice");
   setpageNumber(pageNumber+1);
 
   setRowCount(MasterDataList.length);
@@ -142,11 +166,13 @@ const nextPage =() => {
   else{
       setTotalPages(MasterDataList.length/10);
   }
-  //console.log("Lower: " + 5+(pageNumber-1)+ "Upper: " + 5*(pageNumber+1)-1);
+  var iRowCount=MasterDataList.length-1;
   var upperBound=(10*(pageNumber+1))-1;
   var lowerBound=upperBound-9;
-  upperBound=upperBound>=MasterDataList.length?(MasterDataList.length)-1:(10*(pageNumber+1))-1;
-  lowerBound=lowerBound>=MasterDataList.length?(MasterDataList.length)-1:(upperBound-9);
+  upperBound=(upperBound>iRowCount?iRowCount:upperBound);
+  lowerBound=(lowerBound>iRowCount?iRowCount:lowerBound);
+  //upperBound=upperBound>=MasterDataList.length?(MasterDataList.length)-1:(10*(pageNumber+1))-1;
+  //lowerBound=lowerBound>=MasterDataList.length?(MasterDataList.length)-1:(upperBound-9);
   var pageData=[];
   for(var iRowIndex=lowerBound;iRowIndex<=upperBound;iRowIndex++){
       pageData.push(MasterDataList[iRowIndex]);
@@ -158,7 +184,6 @@ const closePopUp = () => {
   onCancel();
 }
 const previousPage =() => { 
-  console.log("splice");
   setpageNumber(pageNumber-1);
 
   setRowCount(MasterDataList.length);
@@ -185,10 +210,20 @@ const previousPage =() => {
     <div className='asset_table_inner_wrap'>
     <Table hover responsive>
   <thead>
-  <tr>{ThData()}
+  <tr>
+      <td className="wd2px">
+                                <Checkbox
+                                    type="checkbox"
+                                    name="selectAll"
+                                    id="selectAll"
+                                   
+                                />
+                            </td>
+    {ThData()}
   <td>Action</td></tr>
   </thead>
   <tbody>
+  
     {tdData()}
     
 </tbody>

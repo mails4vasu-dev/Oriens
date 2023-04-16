@@ -75,7 +75,6 @@ fetchassetList();
                             </td>
                             <td>Asset ID</td>
                             <td>Asset Name</td>
-                            <td>Location Name</td>
                             <td>Site Name</td>
                             <td>Asset Status</td>
                             <td>Asset Category Name</td>
@@ -99,8 +98,7 @@ fetchassetList();
                                 />
                             </td>
                <td>{asset.id}</td>   
-                 <td>{asset.assetName}</td>  
-                <td>{asset.locationName}</td>  
+                 <td>{asset.assetName}</td>
                 <td>{asset.startingUsage}</td>  
                 <td>{asset.statusName}</td>  
                 <td>{asset.categoryName}</td>  

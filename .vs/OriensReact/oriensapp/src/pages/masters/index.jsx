@@ -192,9 +192,10 @@ const getMasterTitle=()=>{
                 </div>
               </div>
             </div>
-    <PopUpModal show={showModal} headerlist={ColumnHeaders}  formInputdata={userData} 
-      formMode={FormMode} masterName={query.get('masterName')} 
-      onCancel={hideForm} masterTitle={getMasterTitle()}/>
+<PopUpModal show={showModal} headerlist={ColumnHeaders}  formInputdata={userData} 
+ formMode={FormMode} masterName={query.get('masterName')} 
+ onCancel={hideForm} masterTitle={getMasterTitle()} formSelectData={userData}/>
+   
 <DynamicTable headerList={ColumnHeaders} onEdit={editUserHandler} 
       onDelete={deleteUser} masterName={query.get('masterName')} 
       contentInPopUp={false} showInWindow={true}/>

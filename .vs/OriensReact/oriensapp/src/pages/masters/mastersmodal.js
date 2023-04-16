@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState,useEffect} from 'react';
 import '../masters/mastersstyle.css'
 import masterHeaders from './masterHeaders'
 import { Configuration } from "../../config/index";
@@ -16,15 +16,21 @@ import { useLocation } from 'react-router-dom';
 import DynamicTable from "./dynamicmastertable";
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem,   Modal, 
   ModalBody } from 'reactstrap';
+  var formSelectListData=[];
+  
 const PopUpModal = ({show, formInputdata, onCancel, editUser,headerlist
-  ,formMode,masterName,masterTitle}) => {
-console.log("formMode " + formMode);
+  ,formMode,masterName,masterTitle,formSelectData}) => {
+  
+ 
+var selectOptionsAssetCatg=null;    
+const [formControlValue, setformControlValue] = useState();
 const [ColumnHeaders, setColumnHeaders] = useState([]);
 const [MasterHeaderList, setMasterHeaderList] = useState(masterHeaders);
 const query = new URLSearchParams(useLocation().search);
 const [MasterDataOptions,setMasterDataOptions] = useState(null);
 const [MasterForSelectControl,setMasterForSelectControl] = useState([]);
 const [AssetCategoryList,setAssetCategoryList] = useState([]);
+const [AssetCategoryItem,setAssetCategoryItem] = useState([]);
 const [AssetTypeList,setAssetTypeList] = useState([]);    
 const [AssetWarrantyList,setAssetWarrantyList] = useState([]);    
 const [AssetPriorityList,setAssetPriorityList] = useState([]);    
@@ -35,14 +41,26 @@ const [FailureClassList,setFailureClassList] = useState([]);
 const [UomList,setUomList] = useState([]);    
 const [LocationList,setLocationList] = useState([]);    
 const [LocationTypeList,setLocationTypeList] = useState([]);    
-const [selectedOption, setSelectedOption] = useState(null);
+const [selectedOption, setSelectedOption] = useState([]);
+const [formdataColection, setformdataColection] = useState(formInputdata);
+const [formSelectValueList, setformSelectValueList] = useState([]);
 const [paramcontentInPopUp,setparamcontentInPopUp]= useState(false); 
 const [paramshowInWindow,setparamshowInWindow]= useState(false); 
     // handle onChange event of the dropdown
-    const handleSelectOptionChange = e => {
-      setSelectedOption(e);
-    }
 
+useEffect(() => {
+   if(formInputdata!=null){
+    var localformSelectData=formInputdata['parentCategoryId'];
+    var catgList=AssetCategoryList.filter(item=>item.value==localformSelectData);
+    setSelectedOption(catgList);
+  }
+  
+}, [formInputdata]);    
+const handleSelectOptionChange = e => {
+  setSelectedOption(e);
+  formSelectListData=e;
+  //selectOptionsAssetCatg=e;
+}
 const getAPIUrl = (methodType) => {
   var apiUrl='./masterPostAPI.json';
   if(methodType=="POST"){
@@ -80,10 +98,10 @@ const [maxTime, setMaxTime] = React.useState(
 
 
 const [MasterKeyList, setMasterKeyList] = useState();
-  useEffect(() => {
+  // useEffect(() => {
     
-    if (editUser) setFormData(editUser);
-  }, [editUser]);
+  //   if (editUser) setFormData(editUser);
+  // }, [editUser]);
 
   const navigate = useNavigate();
   const refreshPage = () => {
@@ -210,40 +228,49 @@ const [MasterKeyList, setMasterKeyList] = useState();
 
  }
  
- const getMasterForSelectControl=(listName)=>{
+ const getMasterForSelectControl=(listName,keyName,paramformSelectValueList)=>{
+   
   if(listName=="assetCategory"){
     return AssetCategoryList;
   }
   if(listName=="assetsType"){
+    
     return AssetTypeList;
   }
   if(listName=="assetsWarranty"){
+   
     return AssetWarrantyList;
   }
   if(listName=="assetsPriority"){
+   
     return AssetPriorityList;
   }
   if(listName=="assetsCriticality"){
+   
     return AssetCriticalityList;
   }
   if(listName=="assetsStatus"){
+   
     return AssetStatusList;
   }
   if(listName=="assets"){
+  
     return AssetList;
   }
   if(listName=="failureClass"){
+   
     return FailureClassList;
   }
 
   if(listName=="uom"){
+  
     return UomList;
   }
   if(listName=="location"){
-    return LocationList;
+      return LocationList;
   }
   if(listName=="locationType"){
-    return LocationTypeList;
+      return LocationTypeList;
   }
  }
   const initialFormState = () => {
@@ -263,6 +290,7 @@ const [MasterKeyList, setMasterKeyList] = useState();
     getMasterList('locationType');
     setparamcontentInPopUp(false);
     setparamshowInWindow(false);
+    
   } 
   const getMasterSelectOptions =(listType)=>{
 if(listType=="assetCategory"){
@@ -277,6 +305,7 @@ if(listType=="assetsWarranty"){
 //warrantyName
   }
   const postJsonData = () =>  {
+    
     // Simple POST request with a JSON body using fetch
     const requestOptions = {
         method: 'POST',
@@ -289,7 +318,7 @@ if(listType=="assetsWarranty"){
 }
 const putJsonData = () =>  {
   // Simple POST request with a JSON body using fetch
-  
+  debugger;
   const requestOptions = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -309,7 +338,7 @@ const deleteJsonData = () =>  {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formInputdata)
   };
-  console.log(AssetCatgDeleteUrl);
+  
 
   fetch(AssetCatgDeleteUrl + '/' + masterKeyValue, requestOptions)
       .then(response => response.json())
@@ -317,7 +346,8 @@ const deleteJsonData = () =>  {
 }
 
 
-  const [formData, setFormData] = useState(initialFormState);
+  
+  
 
   const onInputChange = event => {
     
@@ -330,10 +360,26 @@ const deleteJsonData = () =>  {
     //  setJsonInput(tempJson);
     //  setInitialJsonInput(tempJson);
     //  let tempJsonInput=JsonInput;
-    let tempJson=InitialJsonInput;
-    tempJson[name]=value;
+    let tempJson=JsonInput;
+    
+    if(JsonInput==null){
+      var tempJsonString=  "{" + '"' + name+  '"' + ":"+ '"'+ value +  '"' + "}";
+     // tempJson=JSON.parse(tempJsonString);
+      //console.log(tempJsonString);
+      tempJson=JSON.parse(tempJsonString);
+    }
+    else{
+      tempJson[name]=value;
+      formInputdata[name]=value;
+      
+    }
+   
+    //tempJson[name]=value;
      setJsonInput(tempJson);
      setInitialJsonInput(tempJson);
+     if(formMode=="Edit"){
+      setformControlValue(tempJson);
+     }
      let tempJsonInput=JsonInput;
   }
 
@@ -358,7 +404,7 @@ const deleteJsonData = () =>  {
       currentDate: date
     })
   }
-  const showListPopUp=(paramMasterName)=>{debugger;
+  const showListPopUp=(paramMasterName)=>{
     setparamcontentInPopUp(true);
     setparamshowInWindow(false);
     setColumnHeaders(MasterHeaderList.filter(a => a.masterName == paramMasterName)[0].headerName);
@@ -371,7 +417,19 @@ const deleteJsonData = () =>  {
   }
   
   const updateControlDate=(name,value)=>{
-    let tempJson=InitialJsonInput;
+    let tempJson=JsonInput;
+    
+    if(JsonInput==null){
+      var tempJsonString=  "{" + '"' + name+  '"' + ":"+ '"'+ value +  '"' + "}";
+     // tempJson=JSON.parse(tempJsonString);
+      //console.log(tempJsonString);
+      tempJson=JSON.parse(tempJsonString);
+    }
+    else{
+      tempJson[name]=value;
+    }
+
+  //  let tempJson=InitialJsonInput;
     InitialJsonInput[name]=value;
      setJsonInput(tempJson);
      setInitialJsonInput(tempJson);
@@ -379,7 +437,22 @@ const deleteJsonData = () =>  {
   const updateControlSelect=(name,value)=>{
     //let tempJson=InitialJsonInput;
     InitialJsonInput[name]=value.value;
-    let tempJson=InitialJsonInput;
+    formInputdata[name]=value.value;
+   // let tempJson=InitialJsonInput;
+
+   let tempJson=JsonInput;
+   
+   if(JsonInput==null){
+     var tempJsonString=  "{" + '"' + name+  '"' + ":"+ '"'+ value.value +  '"' + "}";
+    // tempJson=JSON.parse(tempJsonString);
+    // console.log(tempJsonString);
+     tempJson=JSON.parse(tempJsonString);
+   }
+   else{
+     tempJson[name]=value.value;
+   }
+
+
      setJsonInput(tempJson);
      setInitialJsonInput(tempJson);
      let tempJsonInput=JsonInput;
@@ -393,28 +466,33 @@ const deleteJsonData = () =>  {
     
     return value;
   }
-  const colourStyles = {
-    menuList: styles => ({
-      background: 'papayawhip',
-    }),
-    option: (styles, { isFocused, isSelected }) => ({
-         background: isFocused
-        ? 'hsla(291, 64%, 42%, 0.5)'
-        : isSelected
-          ? 'hsla(291, 64%, 42%, 1)'
-          : undefined,
-      zIndex: 1,
-    }),
-    menu: base => ({
-        zIndex: 100,
-    }),
+  
+ 
+  const getControlValue =(paramformControlValue,paramcontrolValue)=>{
+  if(paramformControlValue!=null && paramcontrolValue!=null){
+    console.log(paramformControlValue[paramcontrolValue]);
+    return paramformControlValue[paramcontrolValue];
   }
-  const getFormFields =()=>{
+  }
+   
+  const [formData, setFormData] = useState(initialFormState);
+  
+  const getFormFields =()=>{ debugger;
+     
+    
+    if(formControlValue==null){
+      setformControlValue(formInputdata);
+    }
+    else if(formControlValue["id"] != formInputdata["id"]){
+      setformControlValue(formInputdata);
+    }
+    
     if(formMode=='Delete'){
       deleteJsonData();
     }
     else{
       if(headerlist != null){ 
+       // setformControlValue(formInputdata);
         let tempMasterForSelectControl=MasterForSelectControl;
         return Object.keys(headerlist).map((data)=>{
           if(headerlist[data].controlType!=null && 
@@ -447,13 +525,16 @@ const deleteJsonData = () =>  {
 
             return <li>
             <label  className="lblCaption">{headerlist[data].htmlHeader}</label>
+            
             <Select
                     placeholder="Select Option"
                     className="masterUIselect"
                     name={headerlist[data].jsonHeader}
-                    value={selectedOption} // set selected value
-                    options={ getMasterForSelectControl(headerlist[data].parentName)} // set list of the data
+                   // value={formSelectListData} 
+                   value={selectedOption} 
+                    options={ getMasterForSelectControl(headerlist[data].parentName,headerlist[data].jsonHeader,formSelectValueList)} // set list of the data
                     onChange={(optionSelected) => {
+                      debugger;
                       handleSelectOptionChange();
                       updateControlSelect(headerlist[data].jsonHeader,optionSelected);
                     }}
@@ -473,9 +554,12 @@ const deleteJsonData = () =>  {
               return   <li>
               <label  className="lblCaption">{headerlist[data].htmlHeader}</label>
               <div className='input_with_icons'>
+                
+               
               <input type="text" 
                 name={headerlist[data].jsonHeader} 
-                onChange={onInputChange} autoFocus autoComplete="off" 
+                onChange={onInputChange} 
+                autoFocus autoComplete="off" 
                 placeholder={'Enter '+headerlist[data].htmlHeader}/>
                 <button type="button" className='grid_icon' 
                 onClick=
@@ -495,8 +579,13 @@ const deleteJsonData = () =>  {
             else{
               return   <li>
             <label  className="lblCaption">{headerlist[data].htmlHeader}</label>
+            {/* <input type="text" 
+                name="txtnew" 
+                value ={getControlValue(formControlValue,headerlist[data].jsonHeader)}
+                /> */}
             <input type="text" 
               name={headerlist[data].jsonHeader} 
+              value ={getControlValue(formControlValue,headerlist[data].jsonHeader)}
               onChange={onInputChange} autoFocus autoComplete="off" 
               placeholder={'Enter '+headerlist[data].htmlHeader}/>
             </li>
@@ -527,6 +616,7 @@ const deleteJsonData = () =>  {
           <div className='filter_form_outer_wrap'>
             <ul>
             {getFormFields()}
+            
             </ul>
           </div>
          
